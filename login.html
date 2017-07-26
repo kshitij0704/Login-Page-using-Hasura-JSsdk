@@ -10,11 +10,11 @@
 <body>
  <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.1/hasura.min.js"></script>
     <script>
-        hasura.setBaseDomain('kshitijsachdeva.hasura.me');
+        hasura.setBaseDomain('yoursetdomain here');//the domain you have set on dashboard.hasura.io will come here
         hasura.disableHttps(); // No HTTPS enabled on local-development
 
         if(!(hasura.user.token==null)){
-        	window.location="./selectable.html"
+        	window.location="<post login page url>"//redirects to the page you want the user to land onto after login
         }
 
         function loginaction(){
