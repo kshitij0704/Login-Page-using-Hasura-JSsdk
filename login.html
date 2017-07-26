@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Log-In</title>
+<link rel="stylesheet" type="text/css" href="../login/login.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+ <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.1/hasura.min.js"></script>
+    <script>
+        hasura.setBaseDomain('kshitijsachdeva.hasura.me');
+        hasura.disableHttps(); // No HTTPS enabled on local-development
+
+        if(!(hasura.user.token==null)){
+        	window.location="./selectable.html"
+        }
+
+        function loginaction(){
+    		var username = document.forms["login-form"]["username"].value;
+    		var password = document.forms["login-form"]["password"].value;
+    		if(username&&password){
+    		hasura.setUsername(username)
+
+    		function mySuccessHandler (data) {
+				if(hasura.user.token){
+				alert("login Success")
+				window.location="./selectable.html";
+				}
+				else{
+					alert("Error Fetching Auth token, Please Login again")
+				}	
+				}
+
+			function myErrorHandler (e) {
+				  console.log(e);
+				  alert("Login Failed, Please try again")
+				}
+
+			hasura.auth.login(password,
+				  mySuccessHandler,
+				  myErrorHandler
+				);
+		}
+		else{
+			alert("Username or Password cannot be empty");
+		}
+
+    	}
+
+    	function signupaction(){
+    		var username = document.forms["register-form"]["username"].value;
+    		var password = document.forms["register-form"]["password"].value;
+    		var email = document.forms["register-form"]["email"].value;
+    		if(username&&password&&email){
+    		hasura.setUsername(username)
+    		hasura.user.email = email;
+
+    		function mySuccessHandler () {
+    			alert("Signup success")
+    			if(hasura.user.token){
+				window.location="./selectable.html";
+				}
+				else{
+					alert("Error fetching auth token , Please sign in again");
+				}
+				}
+
+			function myErrorHandler () {
+				  alert("Signup Failed, Please try again")
+				}
+				
+
+			hasura.auth.signup(password,"option",
+				  mySuccessHandler,
+				  myErrorHandler
+				);
+
+		}
+		else{
+			alert("All feilds are Required");
+		}
+
+    	}
+    </script>
+
+    
+
+   <div class="login-page">
+  <div class="form">
+    <form class="register-form" name = "register-form" method="POST">
+      <input type="text" name = "username" placeholder="name"/>
+      <input type="password" name = "password"  placeholder="password"/>
+      <input type="text" name="email" placeholder="email address"/>
+      <button type = "button" onclick="signupaction()">Sign Up</button>
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form>
+    <form class="login-form" name="login-form" method="POST">
+      <input type="text" name= "username" placeholder="username"/>
+      <input type="password" name="password" placeholder="password"/>
+      <button type = "button" onclick="loginaction()">login</button>
+      <p class="message">Not registered? <a href="#">Create an account</a></p>
+    </form>
+  </div>
+</div>
+
+    <script>
+    	$('.message a').click(function(){
+   		$('form').animate({height: "toggle", opacity: "toggle"}, "fast");
+		});
+    </script>
+</body>
+
+</html>
